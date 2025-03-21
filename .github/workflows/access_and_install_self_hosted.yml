@@ -15,7 +15,7 @@ jobs:
           echo "Testing EC2 SSH connectivity..."
           ssh -i ~/Downloads/github_actions_key.pem ubuntu@43.204.108.51 exit && echo "EC2 connected"
 
-      - name: SSH into EC2 and Install Nginx
+      - name: Install Nginx
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/Downloads/github_actions_key.pem ubuntu@43.204.108.51 << 'EOF'
             set -e  # Exit on error
