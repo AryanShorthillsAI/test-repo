@@ -20,13 +20,11 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/github_actions_key.pem
           chmod 400 ~/.ssh/github_actions_key.pem  # Restrict key permissions
 
-      - name: SSH into EC2
+      - name: SSH into EC2 and Install Nginx
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github_actions_key.pem ubuntu@${{ secrets.EC2_HOST }}
-
-      - name: Install Nginx
-        run:  |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github_actions_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             sudo apt update
             sudo apt install -y nginx
             sudo systemctl start nginx
             echo "Nginx installation complete!"
+          EOF
