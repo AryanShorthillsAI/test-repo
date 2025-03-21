@@ -1,0 +1,19 @@
+name: Hello World Workflow
+
+on:
+  schedule:
+    - cron: "33 10 * * *"
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Print Hello World
+        run: echo "Hello, World! this is aryan"
+
+      - name: Save Output to File
+        run: echo "Hello, World!" > output.txt
