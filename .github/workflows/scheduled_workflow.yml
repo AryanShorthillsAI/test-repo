@@ -1,8 +1,8 @@
-name: Hello World Workflow
+name: Hello World scheduled Workflow
 
 on:
   schedule:
-    - cron: "33 10 * * *"
+    - cron: "42 10 * * *"
   workflow_dispatch:
 
 jobs:
