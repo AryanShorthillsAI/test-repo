@@ -1,0 +1,32 @@
+name: Access EC2 and install nginx
+
+on:
+  workflow_dispatch:
+
+jobs:
+  access_ec2_install_nginx:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install SSH Client
+        run: sudo apt-get install -y openssh-client
+
+      - name: Add SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh  # Secure the SSH directory
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
+          chmod 600 ~/.ssh/ec2_key.pem  # Restrict key permissions
+
+      - name: SSH into EC2 and Install Nginx
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e  # Exit on error
+            sudo apt update
+            sudo apt install -y nginx
+            sudo systemctl restart nginx
+            sudo systemctl enable nginx
+            echo "✅ Nginx installation complete!"
+          EOF
