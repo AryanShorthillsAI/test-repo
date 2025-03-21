@@ -1,0 +1,47 @@
+name: Access EC2 and Install Nginx, tree and mysql (Self-Hosted)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install_nginx:
+    runs-on: self-hosted  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nginx
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/Downloads/github_actions_key.pem ubuntu@43.204.108.51 << 'EOF'
+            set -e  # Exit on error
+            sudo apt update
+            sudo apt install nginx -y
+            sudo systemctl start nginx
+            sudo systemctl enable nginx
+            echo "Nginx installed"
+          EOF
+
+  install_tree:
+    runs-on: self-hosted  
+    steps:
+      - name: Install Tree Package
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/Downloads/github_actions_key.pem ubuntu@43.204.108.51 << 'EOF'
+            set -e  # Exit on error
+            sudo apt install tree -y
+            echo "Tree installed"
+          EOF
+
+  install_mysql:
+    runs-on: self-hosted
+    needs: install_nginx  
+    steps:
+      - name: Install MySQL
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/Downloads/github_actions_key.pem ubuntu@43.204.108.51 << 'EOF'
+            set -e  # Exit on error
+            sudo apt install mysql-server -y
+            sudo systemctl start mysql
+            sudo systemctl enable mysql
+            echo "MySQL installed"
+          EOF
