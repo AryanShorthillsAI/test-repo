@@ -18,7 +18,7 @@ jobs:
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh  # Secure the SSH directory
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key.pem
-          chmod 600 ~/.ssh/ec2_key.pem  # Restrict key permissions
+          chmod 400 ~/.ssh/ec2_key.pem  # Restrict key permissions
 
       - name: SSH into EC2 and Install Nginx
         run: |
