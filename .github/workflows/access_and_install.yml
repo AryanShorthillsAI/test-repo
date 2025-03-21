@@ -25,6 +25,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github_actions_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             sudo apt update
             sudo apt install -y nginx
-            sudo systemctl start nginx
             echo "Nginx installed"
           EOF
