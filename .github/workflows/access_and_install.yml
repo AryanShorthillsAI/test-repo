@@ -17,7 +17,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh  # Secure the SSH directory
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/github_actions_.pem
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/github_actions_key.pem
           chmod 400 ~/.ssh/github_actions_key.pem  # Restrict key permissions
 
       - name: SSH into EC2
@@ -28,6 +28,4 @@ jobs:
         run:  |
             sudo apt update
             sudo apt install -y nginx
-            sudo systemctl start nginx
-            sudo systemctl enable nginx
             echo "Nginx installation complete!"
