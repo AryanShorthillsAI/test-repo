@@ -5,7 +5,7 @@ on:
 
 jobs:
   install_packages:
-    runs-on: self-hosted  # Self-hosted runner
+    runs-on: ubuntu-latest  # Self-hosted runner
     strategy:
       matrix:
         package: [nginx, tree]  # Run jobs for both nginx and tree in parallel
@@ -28,7 +28,7 @@ jobs:
           EOF
 
   install_mysql:
-    runs-on: self-hosted  # Self-hosted runner
+    runs-on: ubuntu-latest  # Self-hosted runner
     needs: install_packages  # Runs only after install_packages (nginx & tree) completes
     steps:
       - name: Checkout repository
