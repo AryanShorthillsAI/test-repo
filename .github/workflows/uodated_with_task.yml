@@ -1,0 +1,51 @@
+name: Access EC2 and Install Packages (Self-Hosted with Matrix)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install_packages:
+    runs-on: self-hosted  # Self-hosted runner
+    strategy:
+      matrix:
+        package: [nginx, tree]  # Run jobs for both nginx and tree in parallel
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH for EC2
+        uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
+        with:
+          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_URL: ubuntu@${{ secrets.EC2_HOST }}
+
+      - name: Install ${{ matrix.package }} on EC2
+        run: |
+          ssh ec2-instance << 'EOF'
+            sudo apt update
+            sudo apt install -y ${{ matrix.package }}
+            echo "✅ ${{ matrix.package }} installed"
+          EOF
+
+  install_mysql:
+    runs-on: self-hosted  # Self-hosted runner
+    needs: install_packages  # Runs only after install_packages (nginx & tree) completes
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH for EC2
+        uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
+        with:
+          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_URL: ubuntu@${{ secrets.EC2_HOST }}
+
+      - name: Install MySQL on EC2
+        run: |
+          ssh ec2-instance << 'EOF'
+            sudo apt update
+            sudo apt install -y mysql-server
+            sudo systemctl restart mysql
+            sudo systemctl enable mysql
+            echo "✅ MySQL installed"
+          EOF
