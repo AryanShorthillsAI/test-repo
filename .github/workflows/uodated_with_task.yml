@@ -13,6 +13,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install ssh 
+        run: sudo apt install openssh-client -y
+
       - name: Setup SSH for EC2
         uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
         with:
@@ -33,6 +36,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
+      - name: Install ssh 
+        run: sudo apt install openssh-client -y
 
       - name: Setup SSH for EC2
         uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
