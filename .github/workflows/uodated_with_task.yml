@@ -13,14 +13,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install ssh 
-        run: sudo apt install openssh-client -y
+      # - name: Install ssh 
+      #   run: sudo apt install openssh-client -y
 
       - name: Setup SSH for EC2
         uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
         with:
           EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          EC2_URL: ubuntu@${{ secrets.EC2_HOST }}
+          EC2_URL: ${{ secrets.EC2_HOST }}
 
       - name: Install ${{ matrix.package }} on EC2
         run: |
@@ -37,14 +37,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Install ssh 
-        run: sudo apt install openssh-client -y
+      # - name: Install ssh 
+      #   run: sudo apt install openssh-client -y
 
       - name: Setup SSH for EC2
         uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
         with:
           EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          EC2_URL: ubuntu@${{ secrets.EC2_HOST }}
+          EC2_URL: ${{ secrets.EC2_HOST }}
 
       - name: Install MySQL on EC2
         run: |
